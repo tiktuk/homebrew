@@ -9,10 +9,12 @@ class Cdargs <Formula
     system "./configure", "--prefix=#{prefix}", "--mandir=#{prefix}/share/man"
     system "make"
     system "make install-strip"
+
     FileUtils.rm Dir.glob('contrib/Makefile*')
-    FileUtils.mv 'contrib', prefix.realpath
+    prefix.install 'contrib'
+
     bash_completion_dir = etc+'bash_completion.d'
-    if (!bash_completion_dir.exist?) then bash_completion_dir.mkdir end
+    bash_completion_dir.mkpath
     FileUtils.ln_sf prefix+'contrib/cdargs-bash.sh', bash_completion_dir+'cdargs-bash.sh'
   end
 
